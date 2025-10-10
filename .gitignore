@@ -2,3 +2,6 @@
 *.csv
 *.txt
 tema_red_tesis_datos/*
+cohort_black/*
+cohort_white/*
+taiwanese_cohort/*
