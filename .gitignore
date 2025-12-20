@@ -1,6 +1,13 @@
 *.pdf
+*.tsv
 *.csv
 *.txt
+*.gtf
+*.loci
+*.refmap
+*.tmap
+*.stats
+*.tracking
 tema_red_tesis_datos/*
 cohort_black/*
 cohort_white/*
