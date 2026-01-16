@@ -14,20 +14,24 @@ if __name__ == "__main__":
     counts_df = counts_df.T # because we receive genes on columns, here we change to samples on columns
 
     # Load metadata
-    metadata_df = pd.read_csv(args.metadata, index_col=0)
+    metadata_df = pd.read_csv(args.metadata, index_col=0) # for TAIWAN data
+    # metadata_df = pd.read_csv(args.metadata, index_col=1) # for TCGA data
 
     # Ensure the order of samples in metadata matches the count matrix
     metadata_df = metadata_df.loc[counts_df.columns]
 
     # Divide samples into tumor and normal
-    tumor_samples = metadata_df[metadata_df['PHENOTYPE'] == 'neoplastic'].index
-    normal_samples = metadata_df[metadata_df['PHENOTYPE'] == 'adjacent normal'].index
+    tumor_samples = metadata_df[metadata_df['PHENOTYPE'] == 'neoplastic'].index # TAIWAN
+    normal_samples = metadata_df[metadata_df['PHENOTYPE'] == 'adjacent normal'].index # TAIWAN
+
+    #tumor_samples = metadata_df[metadata_df['Tissue.Type'] == 'Tumor'].index # TCGA
+    #normal_samples = metadata_df[metadata_df['Tissue.Type'] == 'Normal'].index # TCGA
 
     # Create tumor and normal count matrices
     tumor_counts_df = counts_df[tumor_samples]
     normal_counts_df = counts_df[normal_samples]
 
     # Save the divided count matrices, also the same input but transposed too
-    counts_df.T.to_csv(f"{args.output_prefix}_T_merged_counts.tsv", sep=args.sep)
-    tumor_counts_df.T.to_csv(f"{args.output_prefix}_T_tumor_counts.tsv", sep=args.sep)
-    normal_counts_df.T.to_csv(f"{args.output_prefix}_T_normal_counts.tsv", sep=args.sep)
+    counts_df.T.to_csv(f"{args.output_prefix}_T_merged_counts.csv", sep=args.sep)
+    tumor_counts_df.T.to_csv(f"{args.output_prefix}_T_tumor_counts.csv", sep=args.sep)
+    normal_counts_df.T.to_csv(f"{args.output_prefix}_T_normal_counts.csv", sep=args.sep)
