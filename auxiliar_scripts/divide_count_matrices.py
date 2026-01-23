@@ -14,18 +14,18 @@ if __name__ == "__main__":
     counts_df = counts_df.T # because we receive genes on columns, here we change to samples on columns
 
     # Load metadata
-    metadata_df = pd.read_csv(args.metadata, index_col=0) # for TAIWAN data
-    # metadata_df = pd.read_csv(args.metadata, index_col=1) # for TCGA data
+    #metadata_df = pd.read_csv(args.metadata, index_col=0) # for TAIWAN data
+    metadata_df = pd.read_csv(args.metadata, index_col=1) # for TCGA data
 
     # Ensure the order of samples in metadata matches the count matrix
     metadata_df = metadata_df.loc[counts_df.columns]
 
     # Divide samples into tumor and normal
-    tumor_samples = metadata_df[metadata_df['PHENOTYPE'] == 'neoplastic'].index # TAIWAN
-    normal_samples = metadata_df[metadata_df['PHENOTYPE'] == 'adjacent normal'].index # TAIWAN
+    #tumor_samples = metadata_df[metadata_df['PHENOTYPE'] == 'neoplastic'].index # TAIWAN
+    #normal_samples = metadata_df[metadata_df['PHENOTYPE'] == 'adjacent normal'].index # TAIWAN
 
-    #tumor_samples = metadata_df[metadata_df['Tissue.Type'] == 'Tumor'].index # TCGA
-    #normal_samples = metadata_df[metadata_df['Tissue.Type'] == 'Normal'].index # TCGA
+    tumor_samples = metadata_df[metadata_df['Tissue.Type'] == 'Tumor'].index # TCGA
+    normal_samples = metadata_df[metadata_df['Tissue.Type'] == 'Normal'].index # TCGA
 
     # Create tumor and normal count matrices
     tumor_counts_df = counts_df[tumor_samples]
