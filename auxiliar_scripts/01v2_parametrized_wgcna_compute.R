@@ -209,36 +209,6 @@ if (!is.null(datTraits)) {
 # =========================
 # CYTOSCAPE EXPORT (per module)
 # =========================
-message("Preparing Cytoscape exports...")
-dir.create(file.path(outdir, "cytoscape"), showWarnings = FALSE)
-
-# Load TOM (can be huge). Only feasible if saveTOMs=TRUE
-# We'll export for each module a subnetwork using TOM similarity.
-if (saveTOMs) {
-  # NOTE: blockwiseModules saves TOM per block. If you have multiple blocks,
-  # full TOM reconstruction is non-trivial. For Cytoscape you can instead use
-  # intramodular edges based on adjacency. We'll do adjacency-based export (lightweight).
-  adj <- adjacency(datExpr, power = softPower, type = networkType, corFnc = if (corType == "bicor") "bicor" else "cor")
-  for (m in setdiff(unique(moduleColors), "grey")) {
-    inMod <- moduleColors == m
-    modGenes <- geneNames[inMod]
-
-    if (length(modGenes) < 5) next
-    subAdj <- adj[inMod, inMod]
-    colnames(subAdj) <- rownames(subAdj) <- modGenes
-
-    cy <- exportNetworkToCytoscape(
-      subAdj,
-      edgeFile = file.path(outdir, "cytoscape", paste0("edges_", m, ".txt")),
-      nodeFile = file.path(outdir, "cytoscape", paste0("nodes_", m, ".txt")),
-      weighted = TRUE,
-      threshold = cytoscape_TOM_threshold,
-      nodeNames = modGenes,
-      nodeAttr = moduleColors[inMod]
-    )
-  }
-}
-
 # =========================
 # OPTIONAL: export a subset for TOMplot later (PC script)
 # =========================
